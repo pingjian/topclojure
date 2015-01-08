@@ -41,7 +41,8 @@
     (replace-multiple input replacement-pair)))
 
 (defn prettify-output
-  [output])
+  [output]
+  (clojure.string/replace output #"Returns: " ""))
 
 (defn -main
   [url]

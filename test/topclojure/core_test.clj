@@ -21,3 +21,5 @@
              "[1 2]" (prettify-input "{1,2}")
              "1" (prettify-input "1")))
 
+(deftest test-prettify-output
+  (is (= "3" (prettify-output "Returns: 3"))))
