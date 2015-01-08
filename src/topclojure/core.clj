@@ -13,11 +13,9 @@
 
 (defn fetch-signature
   [url]
-  (html/texts (html/select (fetch-html url) function-selector)))
-
-(def function-selector
-  [:td.statText :> :table :> (html/nth-child 5) :> (html/nth-child 2)])
-
+  (let [function-seletor
+        [:td.statText :> :table :> (html/nth-child 5) :> (html/nth-child 2)]]
+    (html/texts (html/select (fetch-html url) function-selector))))
 
 (defn fetch-html
   [url]
