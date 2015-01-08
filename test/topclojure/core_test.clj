@@ -11,5 +11,12 @@
              '("K" "danceCost") (retrieve-parameters
                                  "int minimum(int K, int[] danceCost)")))
 
+(deftest test-replace-multiple
+  (are [x y] (= x y)
+             "B" (replace-multiple "A" [#"A" "B"])
+             "C" (replace-multiple "C" [#"B" "B"])))
+
 (deftest test-prettify-input
-  )
+  (are [x y] (= x y)
+             "[1 2]" (prettify-input "{1, 2}")
+             "1" (prettify-input "1")))
