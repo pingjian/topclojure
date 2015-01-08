@@ -35,20 +35,17 @@
   (let [replacement-pair (partition 2 replacements)]
     (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
 
-(defn prettify-vector
+(defn prettify-io
   [input]
   (let [replacement-pair [#"\{" "["
                           #"\}" "]"
-                          #"\," " "]]
+                          #"\," " "
+                          #"^Returns: " ""]]
     (replace-multiple input replacement-pair)))
-
-(defn prettify-output
-  [output]
-  (clojure.string/replace output #"^Returns: " ""))
 
 (defn prettify-ios
   [ios]
-  )
+  (map #(map prettify-io %) ios))
 
 (defn -main
   [url]

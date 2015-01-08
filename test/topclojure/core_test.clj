@@ -16,12 +16,12 @@
              "B" (replace-multiple "A" [#"A" "B"])
              "C" (replace-multiple "C" [#"B" "B"])))
 
-(deftest test-prettify-vector
+(deftest test-prettify-io
   (are [x y] (= x y)
-             "[1 2]" (prettify-vector "{1,2}")
-             "1" (prettify-vector "1")))
+             "[1 2]" (prettify-io "{1,2}")
+             "1" (prettify-io "1")
+             "3" (prettify-io "Returns: 3")))
 
-(deftest test-prettify-output
-  (is (= "3" (prettify-output "Returns: 3"))))
-
-
+(deftest test-prettify-ios
+  (are [x y] (= x y)
+             [["[1 2 3]" "3"] ["[5 5]" "0"]] (prettify-ios '(("{1,2,3}" "Returns: 3") ("{5,5}" "Returns: 0")))))
