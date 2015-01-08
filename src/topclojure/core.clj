@@ -10,17 +10,17 @@
   [url]
   (let [function-selector
         [:td.statText :> :table :> (html/nth-child 5) :> (html/nth-child 2)]]
-    (html/texts (html/select (fetch-html url) function-selector))))
+    (apply html/text (html/select (fetch-html url) function-selector))))
 
 (defn retrieve-function
   [signature]
   (let [pattern (re-pattern #"\s([^(]+)\(")
-        matcher (re-matcher pattern (str signature))]
+        matcher (re-matcher pattern signature)]
     (nth (re-find matcher) 1)))
 
 (defn retrieve-parameters
   [signature]
-  (re-seq #"[^\s,)(]+(?=[,)])" (str signature)))
+  (re-seq #"[^\s,)(]+(?=[,)])" signature))
 
 (defn fetch-ios
   [url]
@@ -51,4 +51,3 @@
     (selmer/render-file "template.clj"
                         {:function   function
                          :parameters parameters})))
-
