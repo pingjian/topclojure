@@ -25,7 +25,9 @@
 (defn fetch-ios
   [url]
   (let [io-selector [:pre]
-        parameter-count (count (fetch-signature url))]
+        signature (fetch-signature url)
+        parameters (retrieve-parameters signature)
+        parameter-count (count parameters)]
     (partition (inc parameter-count)
                (map html/text (html/select (fetch-html url) io-selector)))))
 
@@ -43,6 +45,10 @@
 (defn prettify-output
   [output]
   (clojure.string/replace output #"^Returns: " ""))
+
+(defn prettify-ios
+  [ios]
+  )
 
 (defn -main
   [url]
