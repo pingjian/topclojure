@@ -11,7 +11,5 @@
              '("K" "danceCost") (retrieve-parameters
                                  "int minimum(int K, int[] danceCost)")))
 
-(deftest test-count-parameters
-  (are [x y] (= x y)
-        1 (count-parameters "int train(int[] attributes)")
-        2 (count-parameters "int minimum(int K, int[] danceCost)")))
+(deftest test-prettify-input
+  )

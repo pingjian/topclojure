@@ -26,8 +26,12 @@
   [url]
   (let [io-selector [:pre]
         parameter-count (count (fetch-signature url))]
-    (partition parameter-count
+    (partition (inc parameter-count)
                (map html/text (html/select (fetch-html url) io-selector)))))
+
+(defn prettify-input
+  [input]
+  )
 
 (defn -main
   [url]
