@@ -11,6 +11,10 @@
         matcher (re-matcher pattern signature)]
     (nth (re-find matcher) 1)))
 
+(defn retrieve-parameters
+  [signature]
+    (re-seq #"[^\s,)(]+(?=[,)])" signature))
+
 (defn fetch-signature
   [url]
   (let [function-seletor

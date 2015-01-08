@@ -4,3 +4,9 @@
 
 (deftest test-retrieve-function
   (is (= "train" (retrieve-function "int train(int[] attributes)"))))
+
+(deftest test-retrieve-parameter
+  (are [x y] (= x y)
+             '("attributes") (retrieve-parameters "int train(int[] attributes)")
+             '("K" "danceCost") (retrieve-parameters
+                                 "int minimum(int K, int[] danceCost)")))
