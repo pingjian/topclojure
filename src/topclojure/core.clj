@@ -24,6 +24,9 @@
 
 (defn -main
   [url]
-  (let [function (retrieve-function (fetch-signature url))]
-    (selmer/render-file "template.clj" {:function function})))
+  (let [function (retrieve-function (fetch-signature url))
+        parameters (retrieve-parameters (fetch-signature url))]
+    (selmer/render-file "template.clj"
+                        {:function function
+                        :parameters parameters})))
 
