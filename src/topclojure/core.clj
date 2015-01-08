@@ -22,14 +22,10 @@
   [signature]
   (re-seq #"[^\s,)(]+(?=[,)])" (str signature)))
 
-(defn count-parameters
-  [signature]
-  (count (retrieve-parameters signature)))
-
 (defn fetch-ios
   [url]
   (let [io-selector [:pre]
-        parameter-count (count-parameters (fetch-signature url))]
+        parameter-count (count (fetch-signature url))]
     (partition parameter-count
                (map html/text (html/select (fetch-html url) io-selector)))))
 
