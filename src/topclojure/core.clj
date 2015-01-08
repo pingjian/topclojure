@@ -33,7 +33,7 @@
 
 (defn pack-inputs
   [ios]
-  (map #(conj [(take (dec (count %)) %)] (last %)) ios)
+  (map #(conj [(butlast %)] (last %)) ios)
   )
 
 (defn replace-multiple [subject & [replacements]]
