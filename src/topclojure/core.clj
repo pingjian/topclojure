@@ -7,7 +7,7 @@
 
 (defn retrieve-function
   [signature]
-  (let [pattern (re-pattern #"\s([^(]*)\(")
+  (let [pattern (re-pattern #"\s([^(]+)\(")
         matcher (re-matcher pattern signature)]
     (nth (re-find matcher) 1)))
 
