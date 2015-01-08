@@ -22,6 +22,10 @@
   [signature]
   (re-seq #"[^\s,)(]+(?=[,)])" signature))
 
+(defn count-parameters
+  [signature]
+  (count (retrieve-parameters signature)))
+
 (defn -main
   [url]
   (let [function (retrieve-function (fetch-signature url))
