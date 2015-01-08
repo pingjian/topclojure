@@ -1,0 +1,4 @@
+(ns template)
+
+({{function}}
+  [])

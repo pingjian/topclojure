@@ -1,9 +1,16 @@
 (ns topclojure.core
-  (:require [net.cgrand.enlive-html :as html]))
+  (:require [net.cgrand.enlive-html :as html]
+            [selmer.parser :as selmer]))
 
-(defn -main
-  [& args]
-  (println "Hello, World!"))
+(defn fetch-html
+  [url]
+  (html/html-resource (java.net.URL. url)))
+
+(defn fetch-signature
+  [url]
+  (let [function-selector
+        [:td.statText :> :table :> (html/nth-child 5) :> (html/nth-child 2)]]
+    (apply html/text (html/select (fetch-html url) function-selector))))
 
 (defn retrieve-function
   [signature]
@@ -13,14 +20,10 @@
 
 (defn retrieve-parameters
   [signature]
-    (re-seq #"[^\s,)(]+(?=[,)])" signature))
+  (re-seq #"[^\s,)(]+(?=[,)])" signature))
 
-(defn fetch-signature
+(defn -main
   [url]
-  (let [function-selector
-        [:td.statText :> :table :> (html/nth-child 5) :> (html/nth-child 2)]]
-    (html/texts (html/select (fetch-html url) function-selector))))
+  (let [function (retrieve-function (fetch-signature url))]
+    (selmer/render-file "template.clj" {:function function})))
 
-(defn fetch-html
-  [url]
-  (html/html-resource (java.net.URL. url)))
