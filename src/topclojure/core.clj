@@ -28,11 +28,8 @@
                (map html/text (html/select (fetch-html url) io-selector))))
 
 (defn pack-ios
-  [ios url]
-  (let [signature (fetch-signature url)
-        parameters (retrieve-parameters signature)
-        parameter-count (count parameters)]
-    (partition (inc parameter-count) ios)))
+  [ios parameter-count]
+    (partition (inc parameter-count) ios))
 
 (defn replace-multiple [subject & [replacements]]
   (let [replacement-pair (partition 2 replacements)]
@@ -45,10 +42,6 @@
                           #"\," " "
                           #"^Returns: " ""]]
     (replace-multiple input replacement-pair)))
-
-(defn prettify-ios
-  [ios]
-  (map prettify-io ios))
 
 (defn -main
   [url]
