@@ -31,6 +31,10 @@
   [ios parameter-count]
     (partition (inc parameter-count) ios))
 
+(defn pack-inputs
+  [ios parameter-count]
+  )
+
 (defn replace-multiple [subject & [replacements]]
   (let [replacement-pair (partition 2 replacements)]
     (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
