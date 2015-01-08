@@ -24,12 +24,15 @@
 
 (defn fetch-ios
   [url]
-  (let [io-selector [:pre]
-        signature (fetch-signature url)
+  (let [io-selector [:pre]]
+               (map html/text (html/select (fetch-html url) io-selector))))
+
+(defn pack-ios
+  [ios url]
+  (let [signature (fetch-signature url)
         parameters (retrieve-parameters signature)
         parameter-count (count parameters)]
-    (partition (inc parameter-count)
-               (map html/text (html/select (fetch-html url) io-selector)))))
+    (partition (inc parameter-count) ios)))
 
 (defn replace-multiple [subject & [replacements]]
   (let [replacement-pair (partition 2 replacements)]
@@ -45,7 +48,7 @@
 
 (defn prettify-ios
   [ios]
-  (map #(map prettify-io %) ios))
+  (map prettify-io ios))
 
 (defn -main
   [url]

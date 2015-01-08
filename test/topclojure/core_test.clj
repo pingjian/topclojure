@@ -24,4 +24,5 @@
 
 (deftest test-prettify-ios
   (are [x y] (= x y)
-             [["[1 2 3]" "3"] ["[5 5]" "0"]] (prettify-ios '(("{1,2,3}" "Returns: 3") ("{5,5}" "Returns: 0")))))
+             ["[1 2 3]" "3" "[5 5]" "0"] (prettify-ios '("{1,2,3}" "Returns: 3" "{5,5}" "Returns: 0"))))
+
