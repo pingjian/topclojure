@@ -18,5 +18,6 @@
 
 (deftest test-prettify-input
   (are [x y] (= x y)
-             "[1 2]" (prettify-input "{1, 2}")
+             "[1 2]" (prettify-input "{1,2}")
              "1" (prettify-input "1")))
+

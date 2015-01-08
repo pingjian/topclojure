@@ -37,8 +37,11 @@
   [input]
   (let [replacement-pair [#"\{" "["
                           #"\}" "]"
-                          #"\," ""]]
+                          #"\," " "]]
     (replace-multiple input replacement-pair)))
+
+(defn prettify-output
+  [output])
 
 (defn -main
   [url]
