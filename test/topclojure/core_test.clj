@@ -16,10 +16,10 @@
              "B" (replace-multiple "A" [#"A" "B"])
              "C" (replace-multiple "C" [#"B" "B"])))
 
-(deftest test-prettify-input
+(deftest test-prettify-vector
   (are [x y] (= x y)
-             "[1 2]" (prettify-input "{1,2}")
-             "1" (prettify-input "1")))
+             "[1 2]" (prettify-vector "{1,2}")
+             "1" (prettify-vector "1")))
 
 (deftest test-prettify-output
   (is (= "3" (prettify-output "Returns: 3"))))

@@ -33,7 +33,7 @@
   (let [replacement-pair (partition 2 replacements)]
     (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
 
-(defn prettify-input
+(defn prettify-vector
   [input]
   (let [replacement-pair [#"\{" "["
                           #"\}" "]"
