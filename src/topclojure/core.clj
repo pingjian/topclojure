@@ -42,7 +42,7 @@
 
 (defn prettify-output
   [output]
-  (clojure.string/replace output #"Returns: " ""))
+  (clojure.string/replace output #"^Returns: " ""))
 
 (defn -main
   [url]
