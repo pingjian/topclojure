@@ -25,14 +25,15 @@
 (defn fetch-ios
   [url]
   (let [io-selector [:pre]]
-               (map html/text (html/select (fetch-html url) io-selector))))
+    (map html/text (html/select (fetch-html url) io-selector))))
 
 (defn pack-ios
   [ios parameter-count]
-    (partition (inc parameter-count) ios))
+  (partition (inc parameter-count) ios))
 
 (defn pack-inputs
-  [ios parameter-count]
+  [ios]
+  (map #(conj [(take (dec (count %)) %)] (last %)) ios)
   )
 
 (defn replace-multiple [subject & [replacements]]

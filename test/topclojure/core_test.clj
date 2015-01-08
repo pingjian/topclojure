@@ -9,7 +9,7 @@
   (are [x y] (= x y)
              '("attributes") (retrieve-parameters "int train(int[] attributes)")
              '("K" "danceCost") (retrieve-parameters
-                                 "int minimum(int K, int[] danceCost)")))
+                                  "int minimum(int K, int[] danceCost)")))
 
 (deftest test-replace-multiple
   (are [x y] (= x y)
@@ -24,5 +24,8 @@
 
 (deftest test-pack-ios
   (are [x y] (= x y)
-             '(["[1 2 3]" "3"] ["[5 5]" "0"]) (pack-ios '("[1 2 3]" "3" "[5 5]" "0") 1)))
+             [["[1 2 3]" "3"] ["[5 5]" "0"]] (pack-ios '("[1 2 3]" "3" "[5 5]" "0") 1)))
 
+(deftest test-pack-inputs
+  (are [x y] (= x y)
+             [[["1" "2"] "3"] [["5" "5"] "10"]] (pack-inputs [["1" "2" "3"] ["5" "5" "10"]])))
