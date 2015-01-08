@@ -5,6 +5,12 @@
   [& args]
   (println "Hello, World!"))
 
+(defn retrieve-function
+  [signature]
+  (let [pattern (re-pattern #"\s([^(]*)\(")
+        matcher (re-matcher pattern signature)]
+    (nth (re-find matcher) 1)))
+
 (defn fetch-signature
   [url]
   (html/texts (html/select (fetch-html url) function-selector)))
