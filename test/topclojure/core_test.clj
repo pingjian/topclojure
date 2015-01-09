@@ -8,10 +8,10 @@
              '("K" "danceCost") (retrieve-parameters
                                   "int minimum(int K, int[] danceCost)")))
 
-(deftest test-prettify-ios
+(deftest test-retrieve-ios
   (are [x y] (= x y)
-             "A" (prettify-ios "A")
-             "[]" (prettify-ios "{}")))
+             "A" (retrieve-ios "A")
+             "[]" (retrieve-ios "{}")))
 
 (deftest test-pack-ios
   (are [x y] (= x y)

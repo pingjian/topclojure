@@ -7,27 +7,36 @@
   [url]
   (enlive/html-resource (java.net.URL. url)))
 
-(defn fetch-part
+(defn fetch-selection
   [html selector]
   (apply enlive/text (enlive/select html selector)))
+
+(defn fetch-problem
+  [html]
+  (let [selector [:td.statText :> :a]]
+    (fetch-selection html selector)))
 
 (defn fetch-class
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 1) :> (enlive/nth-child 2)]]
-    (fetch-part html selector)))
+    (fetch-selection html selector)))
 
 (defn fetch-function
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 2) :> (enlive/nth-child 2)]]
-    (fetch-part html selector)))
+    (fetch-selection html selector)))
 
 (defn fetch-signature
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 5) :> (enlive/nth-child 2)]]
-    (fetch-part html selector)))
+    (fetch-selection html selector)))
+
+(defn retrieve-match
+  [problem]
+  (re-find #"\d{3}(?:\.\d)?" problem))
 
 (defn retrieve-parameters
   [signature]
@@ -42,40 +51,42 @@
   [ios parameter-count]
   (partition (inc parameter-count) ios))
 
-(defn prettify-ios [subject]
+(defn retrieve-ios [subject]
   (let [replacement-pair [[#"\{" "["]
                           [#"\}" "]"]
                           [#"\," " "]
                           [#"^Returns: " ""]]]
     (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
 
-(defn retrieve-ios
+(defn consolidate-ios
   [ios-raw, signature]
   (let [parameter-count (count (retrieve-parameters signature))]
-    (pack-ios (map prettify-ios ios-raw) parameter-count)))
+    (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
 (defn retrieve-directory
   []
   (slurp "path"))
 
 (defn retrieve-path
-  [class]
-  (str (retrieve-directory) "/" class ".clj"))
+  [match class]
+  (str (retrieve-directory) "/Srm" match  class ".clj"))
 
 (defn -main
   [url]
   (let [html (fetch-html url)
+        match (retrieve-match (fetch-problem html))
         class (fetch-class html)
         function (fetch-function html)
         signature (fetch-signature html)
         parameters (retrieve-parameters signature)
-        ios (retrieve-ios (fetch-ios html) signature)
+        ios (consolidate-ios (fetch-ios html) signature)
         timestamp (quot (System/currentTimeMillis) 1000)
         template (selmer/render-file "clojure.tmpl"
-                        {:class class
-                         :function   function
-                         :parameters parameters
-                         :ios        ios
-                         :timestamp timestamp})]
-    (spit (retrieve-path class) template)
+                                     {:match      match
+                                      :class      class
+                                      :function   function
+                                      :parameters parameters
+                                      :ios        ios
+                                      :timestamp  timestamp})]
+    (spit (retrieve-path match class) template)
     ))

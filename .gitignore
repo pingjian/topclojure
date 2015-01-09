@@ -56,4 +56,4 @@ crashlytics.properties
 crashlytics-build.properties
 
 # topclojure
-check/
+dummy/
