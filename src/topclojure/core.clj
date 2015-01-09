@@ -16,7 +16,7 @@
   [signature]
   (let [pattern (re-pattern #"\s([^(]+)\(")
         matcher (re-matcher pattern signature)]
-    (nth (re-find matcher) 1)))
+    (second (re-find matcher))))
 
 (defn retrieve-parameters
   [signature]
