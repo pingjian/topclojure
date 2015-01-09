@@ -31,11 +31,6 @@
   [ios parameter-count]
   (partition (inc parameter-count) ios))
 
-(defn pack-inputs
-  [ios]
-  (map #(conj [(butlast %)] (last %)) ios)
-  )
-
 (defn prettify-ios [subject]
   (let [replacement-pair [[#"\{" "["]
                           [#"\}" "]"]
@@ -46,16 +41,17 @@
 (defn retrieve-ios
   [ios-raw, signature]
   (let [parameter-count (count (retrieve-parameters signature))]
-    (pack-inputs (pack-ios (map prettify-ios ios-raw) parameter-count)))
-  )
+    (pack-ios (map prettify-ios ios-raw) parameter-count)))
 
 (defn -main
   [url]
   (let [signature (fetch-signature url)
         function (retrieve-function signature)
         parameters (retrieve-parameters signature)
-        ios (map retrieve-ios (fetch-ios url) signature)]
-    (selmer/render-file "template.clj"
+        ios (retrieve-ios (fetch-ios url) signature)
+        template (selmer/render-file "template.clj"
                         {:function   function
                          :parameters parameters
-                         :ios        ios})))
+                         :ios        ios})]
+    (spit "check.clj" template)
+    ))
