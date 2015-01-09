@@ -1,4 +1,5 @@
 (ns topclojure.core
+  (:gen-class)
   (:require [net.cgrand.enlive-html :as enlive]
             [selmer.parser :as selmer]))
 
@@ -16,16 +17,16 @@
         [:td.statText :> :table :> (enlive/nth-child 1) :> (enlive/nth-child 2)]]
     (fetch-part html selector)))
 
-(defn fetch-signature
-  [html]
-  (let [selector
-        [:td.statText :> :table :> (enlive/nth-child 5) :> (enlive/nth-child 2)]]
-    (fetch-part html selector)))
-
 (defn fetch-function
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 2) :> (enlive/nth-child 2)]]
+    (fetch-part html selector)))
+
+(defn fetch-signature
+  [html]
+  (let [selector
+        [:td.statText :> :table :> (enlive/nth-child 5) :> (enlive/nth-child 2)]]
     (fetch-part html selector)))
 
 (defn retrieve-parameters
@@ -53,16 +54,26 @@
   (let [parameter-count (count (retrieve-parameters signature))]
     (pack-ios (map prettify-ios ios-raw) parameter-count)))
 
+(defn retrieve-directory
+  []
+  (slurp "path"))
+
+(defn retrieve-path
+  [class]
+  (str (retrieve-directory) "/" class ".clj"))
+
 (defn -main
   [url]
   (let [html (fetch-html url)
-        signature (fetch-signature html)
+        class (fetch-class html)
         function (fetch-function html)
+        signature (fetch-signature html)
         parameters (retrieve-parameters signature)
         ios (retrieve-ios (fetch-ios html) signature)
         template (selmer/render-file "template.clj"
-                        {:function   function
+                        {:class class
+                         :function   function
                          :parameters parameters
                          :ios        ios})]
-    (spit "check.clj" template)
+    (spit (retrieve-path class) template)
     ))

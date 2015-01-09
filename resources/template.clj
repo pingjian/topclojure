@@ -1,4 +1,4 @@
-(ns check
+(ns check.{{class}}
   (:require [clojure.test :refer :all]))
 
 (defn {{function}}
