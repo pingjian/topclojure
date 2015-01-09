@@ -63,17 +63,22 @@
   (let [parameter-count (count (retrieve-parameters signature))]
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
-(defn retrieve-directory
+(defn retrieve-directory-path
   []
   (slurp "path"))
 
-(defn retrieve-path
+(defn retrieve-directory
+  []
+  (re-find #"[^/]*$" (retrieve-directory-path)))
+
+(defn retrieve-file-path
   [match class]
-  (str (retrieve-directory) "/Srm" match  class ".clj"))
+  (str (retrieve-directory-path) "/Srm" match class ".clj"))
 
 (defn -main
   [url]
   (let [html (fetch-html url)
+        directory (retrieve-directory)
         match (retrieve-match (fetch-problem html))
         class (fetch-class html)
         function (fetch-function html)
@@ -82,11 +87,12 @@
         ios (consolidate-ios (fetch-ios html) signature)
         timestamp (quot (System/currentTimeMillis) 1000)
         template (selmer/render-file "clojure.tmpl"
-                                     {:match      match
+                                     {:directory  directory
+                                      :match      match
                                       :class      class
                                       :function   function
                                       :parameters parameters
                                       :ios        ios
                                       :timestamp  timestamp})]
-    (spit (retrieve-path match class) template)
+    (spit (retrieve-file-path match class) template)
     ))
