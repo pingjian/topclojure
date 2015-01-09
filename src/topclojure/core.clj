@@ -6,6 +6,12 @@
   [url]
   (html/html-resource (java.net.URL. url)))
 
+(defn retrieve-class
+  [url]
+  (let [function-selector
+        [:td.statText :> :table :> (html/nth-child 1) :> (html/nth-child 2)]]
+    (apply html/text (html/select (fetch-html url) function-selector))))
+
 (defn fetch-signature
   [url]
   (let [function-selector
