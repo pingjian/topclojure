@@ -36,22 +36,26 @@
   (map #(conj [(butlast %)] (last %)) ios)
   )
 
-(defn replace-multiple [subject & [replacements]]
-  (let [replacement-pair (partition 2 replacements)]
+(defn prettify-ios [subject]
+  (let [replacement-pair [[#"\{" "["]
+                          [#"\}" "]"]
+                          [#"\," " "]
+                          [#"^Returns: " ""]]]
     (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
 
-(defn prettify-io
-  [input]
-  (let [replacement-pair [#"\{" "["
-                          #"\}" "]"
-                          #"\," " "
-                          #"^Returns: " ""]]
-    (replace-multiple input replacement-pair)))
+(defn retrieve-ios
+  [ios-raw, signature]
+  (let [parameter-count (count (retrieve-parameters signature))]
+    (pack-inputs (pack-ios (map prettify-ios ios-raw) parameter-count)))
+  )
 
 (defn -main
   [url]
-  (let [function (retrieve-function (fetch-signature url))
-        parameters (retrieve-parameters (fetch-signature url))]
+  (let [signature (fetch-signature url)
+        function (retrieve-function signature)
+        parameters (retrieve-parameters signature)
+        ios (map retrieve-ios (fetch-ios url) signature)]
     (selmer/render-file "template.clj"
                         {:function   function
-                         :parameters parameters})))
+                         :parameters parameters
+                         :ios        ios})))

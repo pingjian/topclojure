@@ -11,16 +11,10 @@
              '("K" "danceCost") (retrieve-parameters
                                   "int minimum(int K, int[] danceCost)")))
 
-(deftest test-replace-multiple
-  (are [x y] (= x y)
-             "B" (replace-multiple "A" [#"A" "B"])
-             "C" (replace-multiple "C" [#"B" "B"])))
-
 (deftest test-prettify-ios
   (are [x y] (= x y)
-             "[1 2]" (prettify-io "{1,2}")
-             "1" (prettify-io "1")
-             "3" (prettify-io "Returns: 3")))
+             "A" (prettify-ios "A")
+             "[]" (prettify-ios "{}")))
 
 (deftest test-pack-ios
   (are [x y] (= x y)
