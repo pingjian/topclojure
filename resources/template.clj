@@ -1,10 +1,10 @@
-(ns check.{{class}}
+(ns check.{{class|safe}}
   (:require [clojure.test :refer :all]))
 
-(defn {{function}}
-  [{% for p in parameters %}{% if not forloop.first %} {% endif %}{{p}}{% endfor %}]
+(defn {{function|safe}}
+  [{% for p in parameters %}{% if not forloop.first %} {% endif %}{{p|safe}}{% endfor %}]
   )
 {% for io in ios %}
-(deftest example-{{forloop.counter0}}
-  (is (= ({{function}}{% for i in io %}{% if forloop.last %}) {{i}})))
-{% else %} {{i}}{% endif %}{% endfor %}{% endfor %}
+(deftest example-{{forloop.counter0|safe}}
+  (is (= ({{function|safe}}{% for i in io %}{% if forloop.last %}) {{i|safe}})))
+{% else %} {{i|safe}}{% endif %}{% endfor %}{% endfor %}
