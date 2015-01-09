@@ -70,10 +70,12 @@
         signature (fetch-signature html)
         parameters (retrieve-parameters signature)
         ios (retrieve-ios (fetch-ios html) signature)
-        template (selmer/render-file "template.clj"
+        timestamp (quot (System/currentTimeMillis) 1000)
+        template (selmer/render-file "clojure.tmpl"
                         {:class class
                          :function   function
                          :parameters parameters
-                         :ios        ios})]
+                         :ios        ios
+                         :timestamp timestamp})]
     (spit (retrieve-path class) template)
     ))
