@@ -1,22 +1,22 @@
 (ns topclojure.core
-  (:require [net.cgrand.enlive-html :as html]
+  (:require [net.cgrand.enlive-html :as enlive]
             [selmer.parser :as selmer]))
 
 (defn fetch-html
   [url]
-  (html/html-resource (java.net.URL. url)))
+  (enlive/html-resource (java.net.URL. url)))
 
 (defn retrieve-class
-  [url]
+  [html]
   (let [function-selector
-        [:td.statText :> :table :> (html/nth-child 1) :> (html/nth-child 2)]]
-    (apply html/text (html/select (fetch-html url) function-selector))))
+        [:td.statText :> :table :> (enlive/nth-child 1) :> (enlive/nth-child 2)]]
+    (apply enlive/text (enlive/select html function-selector))))
 
 (defn fetch-signature
-  [url]
+  [html]
   (let [function-selector
-        [:td.statText :> :table :> (html/nth-child 5) :> (html/nth-child 2)]]
-    (apply html/text (html/select (fetch-html url) function-selector))))
+        [:td.statText :> :table :> (enlive/nth-child 5) :> (enlive/nth-child 2)]]
+    (apply enlive/text (enlive/select html function-selector))))
 
 (defn retrieve-function
   [signature]
@@ -29,9 +29,9 @@
   (re-seq #"[^\s,)(]+(?=[,)])" signature))
 
 (defn fetch-ios
-  [url]
+  [html]
   (let [io-selector [:pre]]
-    (map html/text (html/select (fetch-html url) io-selector))))
+    (map enlive/text (enlive/select html io-selector))))
 
 (defn pack-ios
   [ios parameter-count]
@@ -51,10 +51,11 @@
 
 (defn -main
   [url]
-  (let [signature (fetch-signature url)
+  (let [html (fetch-html url)
+        signature (fetch-signature html)
         function (retrieve-function signature)
         parameters (retrieve-parameters signature)
-        ios (retrieve-ios (fetch-ios url) signature)
+        ios (retrieve-ios (fetch-ios html) signature)
         template (selmer/render-file "template.clj"
                         {:function   function
                          :parameters parameters
