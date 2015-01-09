@@ -6,23 +6,27 @@
   [url]
   (enlive/html-resource (java.net.URL. url)))
 
+(defn fetch-part
+  [html selector]
+  (apply enlive/text (enlive/select html selector)))
+
 (defn fetch-class
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 1) :> (enlive/nth-child 2)]]
-    (apply enlive/text (enlive/select html selector))))
+    (fetch-part html selector)))
 
 (defn fetch-signature
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 5) :> (enlive/nth-child 2)]]
-    (apply enlive/text (enlive/select html selector))))
+    (fetch-part html selector)))
 
 (defn fetch-function
   [html]
   (let [selector
         [:td.statText :> :table :> (enlive/nth-child 2) :> (enlive/nth-child 2)]]
-    (apply enlive/text (enlive/select html selector))))
+    (fetch-part html selector)))
 
 (defn retrieve-parameters
   [signature]
