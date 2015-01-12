@@ -44,8 +44,8 @@
 
 (defn fetch-ios
   [html]
-  (let [io-selector [:pre]]
-    (map enlive/text (enlive/select html io-selector))))
+  (let [selector [:pre]]
+    (map enlive/text (enlive/select html selector))))
 
 (defn pack-ios
   [ios parameter-count]
