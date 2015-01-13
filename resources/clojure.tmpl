@@ -1,6 +1,8 @@
 (ns {{directory|safe}}.Srm{{match|safe}}{{class|safe}}
   (:refer-clojure :exclude [{{function|safe}}])
-  (:require [clojure.test :as test]))
+  (:require [clojure.test :as test]
+    [clojure.math.combinatorics :as combo]
+    [clojure.math.numeric-tower :as math]))
 
 (defn {{function|safe}}
   [{% for p in parameters %}{% if not forloop.first %} {% endif %}{{p|safe}}{% endfor %}]
