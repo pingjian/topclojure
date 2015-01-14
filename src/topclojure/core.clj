@@ -65,7 +65,7 @@
 
 (defn retrieve-directory-path
   []
-  (slurp "path"))
+  (first (read-string (slurp "path"))))
 
 (defn retrieve-directory
   []
