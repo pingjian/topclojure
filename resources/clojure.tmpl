@@ -1,15 +1,15 @@
 (ns {{directory|safe}}.Srm{{match|safe}}{{class|safe}}
-  (:refer-clojure :exclude [{{function|safe}}])
+  (:refer-clojure :exclude [tc-{{function|safe}}])
   (:require [clojure.test :as test]
     [clojure.math.combinatorics :as combo]
     [clojure.math.numeric-tower :as math]))
 
-(defn {{function|safe}}
+(defn tc-{{function|safe}}
   [{% for p in parameters %}{% if not forloop.first %} {% endif %}{{p|safe}}{% endfor %}]
   )
 {% for io in ios %}
 (test/deftest example-{{forloop.counter0|safe}}
-  (test/is (= ({{function|safe}}{% for i in io %}{% if forloop.last %}) {{i|safe}})))
+  (test/is (= (tc-{{function|safe}}{% for i in io %}{% if forloop.last %}) {{i|safe}})))
 {% else %} {{i|safe}}{% endif %}{% endfor %}{% endfor %}
 (defn t
   []
