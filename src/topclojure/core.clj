@@ -64,7 +64,7 @@
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
 (def directory-path
-  (first (read-string (slurp "path"))))
+  ((comp first read-string slurp) "path"))
 
 (def directory
   (re-find #"[^/]*$" directory-path))
