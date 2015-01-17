@@ -60,7 +60,7 @@
 
 (defn consolidate-ios
   [ios-raw, signature]
-  (let [parameter-count (count (retrieve-parameters signature))]
+  (let [parameter-count ((comp count retrieve-parameters) signature)]
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
 (def directory-path
@@ -76,7 +76,7 @@
 (defn -main
   [url]
   (let [html (fetch-html url)
-        match (retrieve-match (fetch-problem html))
+        match ((comp retrieve-match fetch-problem) html)
         class (fetch-class html)
         function (fetch-function html)
         signature (fetch-signature html)
