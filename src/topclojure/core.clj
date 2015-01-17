@@ -63,22 +63,19 @@
   (let [parameter-count (count (retrieve-parameters signature))]
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
-(defn retrieve-directory-path
-  []
+(def directory-path
   (first (read-string (slurp "path"))))
 
-(defn retrieve-directory
-  []
-  (re-find #"[^/]*$" (retrieve-directory-path)))
+(def directory
+  (re-find #"[^/]*$" directory-path))
 
 (defn retrieve-file-path
   [match class]
-  (str (retrieve-directory-path) "/Srm" match class ".clj"))
+  (str directory-path "/Srm" match class ".clj"))
 
 (defn -main
   [url]
   (let [html (fetch-html url)
-        directory (retrieve-directory)
         match (retrieve-match (fetch-problem html))
         class (fetch-class html)
         function (fetch-function html)
