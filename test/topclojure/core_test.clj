@@ -1,6 +1,7 @@
 (ns topclojure.core-test
   (:require [clojure.test :as test]
-            [topclojure.core :as tc]))
+            [topclojure.core :as tc]
+            [environ.core :as environ]))
 
 (test/deftest test-retrieve-parameters
   (test/are [x y] (= x y)
@@ -17,3 +18,5 @@
   (test/are [x y] (= x y)
              [["[1 2 3]" "3"] ["[5 5]" "0"]] (tc/pack-ios '("[1 2 3]" "3" "[5 5]" "0") 1)))
 
+(test/deftest test-environ-env
+  (test/is (environ/env :settings) "settings/clojure.edn"))

@@ -1,7 +1,9 @@
 (ns topclojure.core
   (:gen-class)
   (:require [net.cgrand.enlive-html :as enlive]
-            [selmer.parser :as selmer]))
+            [selmer.parser :as selmer]
+            [environ.core :as environ]
+            [clojure.java.io :as io]))
 
 (defn fetch-html
   [url]
@@ -63,8 +65,19 @@
   (let [parameter-count ((comp count retrieve-parameters) signature)]
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
+(def settings-path-default
+  "settings.edn")
+
+(def settings-path-custom
+  (environ/env :settings))
+
+(def settings-path
+  (if (nil? settings-path-custom)
+    settings-path-default
+    settings-path-custom))
+
 (def settings
-  ((comp read-string slurp) "settings.edn"))
+  ((comp read-string slurp) settings-path))
 
 (def directory
   (re-find #"[^/]*$" (settings :path)))
