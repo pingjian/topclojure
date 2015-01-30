@@ -63,15 +63,18 @@
   (let [parameter-count ((comp count retrieve-parameters) signature)]
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
-(def directory-path
-  ((comp first read-string slurp) "path"))
+(def settings
+  ((comp read-string slurp) "settings.edn"))
 
 (def directory
-  (re-find #"[^/]*$" directory-path))
+  (re-find #"[^/]*$" (settings :path)))
 
 (defn retrieve-file-path
   [match class]
-  (str directory-path "/Srm" match class ".clj"))
+  (str (settings :path) "/Srm" match class ".clj"))
+
+(def template-filename
+  (str (settings :language) ".tmpl"))
 
 (defn -main
   [url]
@@ -83,7 +86,7 @@
         parameters (retrieve-parameters signature)
         ios (consolidate-ios (fetch-ios html) signature)
         timestamp (quot (System/currentTimeMillis) 1000)
-        template (selmer/render-file "clojure.tmpl"
+        template (selmer/render-file template-filename
                                      {:directory  directory
                                       :match      match
                                       :class      class
