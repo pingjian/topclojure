@@ -20,3 +20,12 @@
 
 (test/deftest test-environ-env
   (test/is (environ/env :settings) "settings/clojure.edn"))
+
+(test/deftest test-settings-path
+  (test/is tc/settings-path "settings/clojure.edn"))
+
+(test/deftest test-directory
+  (test/is tc/directory "dummy"))
+
+(test/deftest test-template-filename
+  (test/is tc/template-filename "clojure.tmpl"))
