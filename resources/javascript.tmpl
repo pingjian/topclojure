@@ -1,0 +1,43 @@
+'use strict';
+
+var should = require('should');
+
+var {{function|safe}}Tc = function(attributes) {
+  return 0;
+};
+{% for io in ios %}
+it('example-{{forloop.counter0|safe}}', function() {
+  ({{function|safe}}Tc({% for i in io %}{% if forloop.first %}{{i|safe}}{% endif %}{% if forloop.last %})).should.equal({{i|safe}});
+{% endif %}{% if not any forloop.first forloop.last %}, {{i|safe}}{% endif %}{% endfor %}});
+{% endfor %}
+var t = Math.floor(Date.now() / 1000) - {{timestamp|safe}};
+
+var pt = function(t) {
+  return t / 60;
+};
+
+var TT = 75;
+
+var points = function(pt, TT) {
+  return 250 * (0.3 + (0.7 * Math.pow(TT, 2) /
+    ((10 * Math.pow(pt, 2)) + Math.pow(TT, 2))));
+};
+
+var minutes = function(t) {
+  return Math.floor(t / 60);
+};
+
+var seconds = function(t) {
+  return t % 60;
+};
+
+var timeText = function(t) {
+  return ('Time:   ' + minutes(t) + ' minutes ' + seconds(t) + ' secs');
+};
+
+var pointsText = function(points) {
+  return ('Points: ' + points.toFixed(2));
+};
+
+console.log(timeText(t));
+console.log(pointsText(points(pt(t), TT)));

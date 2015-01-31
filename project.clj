@@ -7,7 +7,9 @@
                  [org.clojure/math.combinatorics "0.0.8"]
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [enlive "1.1.5"]
-                 [selmer "0.7.9"]]
+                 [selmer "0.7.9"]
+                 [environ "1.0.0"]]
+  :plugins [[lein-environ "1.0.0"]]
   :main ^:skip-aot topclojure.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
