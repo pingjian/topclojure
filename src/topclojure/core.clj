@@ -53,16 +53,21 @@
   [ios parameter-count]
   (partition (inc parameter-count) ios))
 
-(defn retrieve-ios [subject]
-  (let [replacement-pair [[#"\{" "["]
-                          [#"\}" "]"]
-                          [#"\," " "]
-                          [#"^Returns: " ""]]]
-    (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
+(def replacement-pair-clojure
+  [[#"\{" "["]
+   [#"\}" "]"]
+   [#"\," " "]
+   [#"^Returns: " ""]]
+  )
+
+(defn make-retrieve-ios
+  [replacement-pair]
+  (fn [subject] (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
 
 (defn consolidate-ios
-  [ios-raw, signature]
-  (let [parameter-count ((comp count retrieve-parameters) signature)]
+  [ios-raw, signature replacement-pair]
+  (let [parameter-count ((comp count retrieve-parameters) signature)
+        retrieve-ios (make-retrieve-ios replacement-pair)]
     (pack-ios (map retrieve-ios ios-raw) parameter-count)))
 
 (def settings-path-default
@@ -102,7 +107,7 @@
         function (fetch-function html)
         signature (fetch-signature html)
         parameters (retrieve-parameters signature)
-        ios (consolidate-ios (fetch-ios html) signature)
+        ios (consolidate-ios (fetch-ios html) signature replacement-pair-clojure)
         timestamp (quot (System/currentTimeMillis) 1000)
         file-path (retrieve-file-path directory-path match class)
         template-filename (retrieve-template-filename (settings :language))
