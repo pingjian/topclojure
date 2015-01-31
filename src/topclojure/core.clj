@@ -80,20 +80,21 @@
 (def settings
   ((comp read-string slurp) (settings-path settings-path-custom settings-path-default)))
 
-(defn retrieve-directory
+(defn retrieve-directory-name
   [directory-path]
   (re-find #"[^/]*$" directory-path))
 
 (defn retrieve-file-path
-  [match class]
-  (str (settings :path) "/Srm" match class ".clj"))
+  [directory-path match class]
+  (str directory-path "/Srm" match class ".clj"))
 
 (def template-filename
   (str (settings :language) ".tmpl"))
 
 (defn -main
   [url]
-  (let [directory (retrieve-directory (settings :path))
+  (let [directory-path (settings :path)
+        directory-name (retrieve-directory-name (settings :path))
         html (fetch-html url)
         match ((comp retrieve-match fetch-problem) html)
         class (fetch-class html)
@@ -102,13 +103,14 @@
         parameters (retrieve-parameters signature)
         ios (consolidate-ios (fetch-ios html) signature)
         timestamp (quot (System/currentTimeMillis) 1000)
+        file-path (retrieve-file-path directory-path match class)
         template (selmer/render-file template-filename
-                                     {:directory  directory
+                                     {:directory  directory-name
                                       :match      match
                                       :class      class
                                       :function   function
                                       :parameters parameters
                                       :ios        ios
                                       :timestamp  timestamp})]
-    (spit (retrieve-file-path match class) template)
+    (spit file-path template)
     ))
