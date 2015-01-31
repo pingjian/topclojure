@@ -88,8 +88,9 @@
   [directory-path match class]
   (str directory-path "/Srm" match class ".clj"))
 
-(def template-filename
-  (str (settings :language) ".tmpl"))
+(defn retrieve-template-filename
+  [language]
+  (str language ".tmpl"))
 
 (defn -main
   [url]
@@ -104,6 +105,7 @@
         ios (consolidate-ios (fetch-ios html) signature)
         timestamp (quot (System/currentTimeMillis) 1000)
         file-path (retrieve-file-path directory-path match class)
+        template-filename (retrieve-template-filename (settings :language))
         template (selmer/render-file template-filename
                                      {:directory  directory-name
                                       :match      match

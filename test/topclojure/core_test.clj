@@ -27,5 +27,5 @@
 (test/deftest test-retrieve-directory
   (test/is (tc/retrieve-directory-name "path/to/dummy") "dummy"))
 
-(test/deftest test-template-filename
-  (test/is tc/template-filename "clojure.tmpl"))
+(test/deftest test-retrieve-template-filename
+  (test/is (tc/retrieve-template-filename "clojure") "clojure.tmpl"))
