@@ -24,8 +24,8 @@
 (test/deftest test-settings-path
   (test/is tc/settings-path "settings/clojure.edn"))
 
-(test/deftest test-directory
-  (test/is tc/directory "dummy"))
+(test/deftest test-retrieve-directory
+  (test/is (tc/retrieve-directory "path/to/dummy") "dummy"))
 
 (test/deftest test-template-filename
   (test/is tc/template-filename "clojure.tmpl"))

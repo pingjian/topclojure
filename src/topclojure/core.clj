@@ -80,8 +80,9 @@
 (def settings
   ((comp read-string slurp) (settings-path settings-path-custom settings-path-default)))
 
-(def directory
-  (re-find #"[^/]*$" (settings :path)))
+(defn retrieve-directory
+  [directory-path]
+  (re-find #"[^/]*$" directory-path))
 
 (defn retrieve-file-path
   [match class]
@@ -92,7 +93,8 @@
 
 (defn -main
   [url]
-  (let [html (fetch-html url)
+  (let [directory (retrieve-directory (settings :path))
+        html (fetch-html url)
         match ((comp retrieve-match fetch-problem) html)
         class (fetch-class html)
         function (fetch-function html)
