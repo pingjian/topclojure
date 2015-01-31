@@ -60,6 +60,10 @@
    [#"^Returns: " ""]]
   )
 
+(defn retrieve-replacement-pair
+  [language]
+  ({"clojure" replacement-pair-clojure} language))
+
 (defn make-retrieve-ios
   [replacement-pair]
   (fn [subject] (reduce #(apply clojure.string/replace %1 %2) (str subject) replacement-pair)))
