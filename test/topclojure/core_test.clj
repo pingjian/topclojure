@@ -3,13 +3,13 @@
             [topclojure.core :as tc]
             [environ.core :as environ]))
 
-(test/deftest test-retrieve-parameters
+(test/deftest test-get-parameters
   (test/are [x y] (= x y)
-                  '("attributes") (tc/retrieve-parameters "int train(int[] attributes)")
-                  '("K" "danceCost") (tc/retrieve-parameters
+                  '("attributes") (tc/get-parameters "int train(int[] attributes)")
+                  '("K" "danceCost") (tc/get-parameters
                                        "int minimum(int K, int[] danceCost)")))
 
-(test/deftest test-retrieve-ios
+(test/deftest test-get-ios
   (let [replacement-pair [[#"\{" "["]
                           [#"\}" "]"]]]
     (test/are [x y] (= x y)
@@ -23,13 +23,13 @@
 (test/deftest test-environ-env
   (test/is (environ/env :settings) "settings/clojure.edn"))
 
-(test/deftest test-retrieve-settings-path
+(test/deftest test-get-settings-path
   (test/are [x y] (= x y)
-                  (tc/retrieve-settings-path "custom.edn" "default.edn") "custom.edn"
-                  (tc/retrieve-settings-path nil "default.edn") "default.edn"))
+                  (tc/get-settings-path "custom.edn" "default.edn") "custom.edn"
+                  (tc/get-settings-path nil "default.edn") "default.edn"))
 
-(test/deftest test-retrieve-directory
-  (test/is (tc/retrieve-directory-name "path/to/dummy") "dummy"))
+(test/deftest test-get-directory
+  (test/is (tc/get-directory-name "path/to/dummy") "dummy"))
 
-(test/deftest test-retrieve-template-filename
-  (test/is (tc/retrieve-template-filename "clojure") "clojure.tmpl"))
+(test/deftest test-get-template-filename
+  (test/is (tc/get-template-filename "clojure") "clojure.tmpl"))
