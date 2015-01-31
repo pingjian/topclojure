@@ -71,13 +71,14 @@
 (def settings-path-custom
   (environ/env :settings))
 
-(def settings-path
-  (if (nil? settings-path-custom)
-    settings-path-default
-    settings-path-custom))
+(defn settings-path
+  [custom default]
+  (if (nil? custom)
+    default
+    custom))
 
 (def settings
-  ((comp read-string slurp) settings-path))
+  ((comp read-string slurp) (settings-path settings-path-custom settings-path-default)))
 
 (def directory
   (re-find #"[^/]*$" (settings :path)))
