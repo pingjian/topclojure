@@ -76,14 +76,15 @@
 (def settings-path-custom
   (environ/env :settings))
 
-(defn settings-path
+(defn retrieve-settings-path
   [custom default]
   (if (nil? custom)
     default
     custom))
 
-(def settings
-  ((comp read-string slurp) (settings-path settings-path-custom settings-path-default)))
+(defn retrieve-settings
+  [settings-path]
+  ((comp read-string slurp) settings-path))
 
 (defn retrieve-directory-name
   [directory-path]
@@ -99,7 +100,9 @@
 
 (defn -main
   [url]
-  (let [directory-path (settings :path)
+  (let [settings-path (retrieve-settings-path settings-path-custom settings-path-default)
+        settings (retrieve-settings settings-path)
+        directory-path (settings :path)
         directory-name (retrieve-directory-name (settings :path))
         html (fetch-html url)
         match ((comp retrieve-match fetch-problem) html)

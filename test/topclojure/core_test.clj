@@ -23,8 +23,10 @@
 (test/deftest test-environ-env
   (test/is (environ/env :settings) "settings/clojure.edn"))
 
-(test/deftest test-settings-path
-  (test/is tc/settings-path "settings/clojure.edn"))
+(test/deftest test-retrieve-settings-path
+  (test/are [x y] (= x y)
+                  (tc/retrieve-settings-path "custom.edn" "default.edn") "custom.edn"
+                  (tc/retrieve-settings-path nil "default.edn") "default.edn"))
 
 (test/deftest test-retrieve-directory
   (test/is (tc/retrieve-directory-name "path/to/dummy") "dummy"))
