@@ -60,9 +60,18 @@
    [#"^Returns: " ""]]
   )
 
+(def replacement-pair-javascript
+  [[#"\{" "["]
+   [#"\}" "]"]
+   [#"\," ", "]
+   [#"^Returns: " ""]
+   [#"\"" "'"]]
+  )
+
 (defn get-replacement-pair
   [language]
-  ({"clojure" replacement-pair-clojure} language))
+  ({"clojure" replacement-pair-clojure
+    "javascript" replacement-pair-javascript} language))
 
 (defn make-retrieve-ios
   [replacement-pair]
@@ -94,9 +103,14 @@
   [directory-path]
   (re-find #"[^/]*$" directory-path))
 
+(defn get-extension
+  [language]
+  ({"clojure" ".clj"
+    "javascript" ".js"} language))
+
 (defn get-file-path
-  [directory-path match class]
-  (str directory-path "/Srm" match class ".clj"))
+  [directory-path match class language]
+  (str directory-path "/Srm" match class (get-extension language)))
 
 (defn get-template-filename
   [language]
@@ -117,7 +131,7 @@
         replacement-pair (get-replacement-pair (settings :language))
         ios (consolidate-ios (get-ios html) signature replacement-pair)
         timestamp (quot (System/currentTimeMillis) 1000)
-        file-path (get-file-path directory-path match class)
+        file-path (get-file-path directory-path match class (settings :language))
         template-filename (get-template-filename (settings :language))
         template (selmer/render-file template-filename
                                      {:directory  directory-name
