@@ -3,7 +3,7 @@
 var should = require('should');
 var _ = require('underscore');
 
-var {{function|safe}}Tc = function(attributes) {
+var {{function|safe}}Tc = function({% for p in parameters %}{% if not forloop.first %}, {% endif %}{{p|safe}}{% endfor %}) {
   return 0;
 };
 {% for io in ios %}
