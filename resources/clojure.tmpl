@@ -1,0 +1,47 @@
+(ns {{directory|safe}}.Srm{{match|safe}}{{class|safe}}
+  (:refer-clojure :exclude [tc-{{function|safe}}])
+  (:require [clojure.test :as test]
+    [clojure.math.combinatorics :as combo]
+    [clojure.math.numeric-tower :as math]))
+
+(defn tc-{{function|safe}}
+  [{% for p in parameters %}{% if not forloop.first %} {% endif %}{{p|safe}}{% endfor %}]
+  )
+{% for io in ios %}
+(test/deftest example-{{forloop.counter0|safe}}
+  (test/is (= (tc-{{function|safe}}{% for i in io %}{% if forloop.last %}) {{i|safe}})))
+{% else %} {{i|safe}}{% endif %}{% endfor %}{% endfor %}
+(defn t
+  []
+  (- (quot (System/currentTimeMillis) 1000) {{timestamp|safe}}))
+
+(defn pt
+  [t]
+  (/ t 60))
+
+(defn tt
+  []
+  75)
+
+(defn points
+  [pt tt]
+  (double (* 250 (+ 0.3 (/ (* 0.7 tt tt) (+ (* 10 pt pt) (* tt tt)))))))
+
+(defn minutes
+  [t]
+  (quot t 60))
+
+(defn seconds
+  [t]
+  seconds (mod t 60))
+
+(defn time-text
+  [t]
+  (str "Time:   " (minutes t) " minutes " (seconds t) " secs"))
+
+(defn points-text
+  [points]
+  (str "Points: " (format "%.2f" points)))
+
+(println (time-text (t)))
+(println (points-text (points (pt (t)) (tt))))
