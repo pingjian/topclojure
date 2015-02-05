@@ -8,7 +8,7 @@ var {{function|safe}}Tc = function({% for p in parameters %}{% if not forloop.fi
 };
 {% for io in ios %}
 it('example-{{forloop.counter0|safe}}', function() {
-  ({{function|safe}}Tc({% for i in io %}{% if forloop.first %}{{i|safe}}{% endif %}{% if forloop.last %})).should.equal({{i|safe}});
+  ({{function|safe}}Tc({% for i in io %}{% if forloop.first %}{{i|safe}}{% endif %}{% if forloop.last %})).should.eql({{i|safe}});
 {% endif %}{% if not any forloop.first forloop.last %}, {{i|safe}}{% endif %}{% endfor %}});
 {% endfor %}
 var t = Math.floor(Date.now() / 1000) - {{timestamp|safe}};
